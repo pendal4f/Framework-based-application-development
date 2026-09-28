@@ -87,6 +87,35 @@ event-interest-service/
 - pytest;
 - flake8.
 
+## Используемые расширения VS Code
+
+Список установленных расширений можно получить командой:
+
+```powershell
+code --list-extensions
+```
+
+В используемом рабочем окружении установлены:
+
+```text
+franneck94.c-cpp-runner
+ms-dotnettools.vscode-dotnet-runtime
+ms-python.debugpy
+ms-python.python
+ms-python.vscode-pylance
+ms-toolsai.jupyter
+ms-toolsai.jupyter-keymap
+ms-toolsai.jupyter-renderers
+ms-toolsai.vscode-jupyter-cell-tags
+ms-toolsai.vscode-jupyter-slideshow
+ms-vscode.cmake-tools
+ms-vscode.cpptools
+ms-vscode.cpptools-extension-pack
+ms-vscode.cpptools-themes
+ritwickdey.liveserver
+vadimcn.vscode-lldb
+```
+
 Установка зависимостей:
 
 ```bash
