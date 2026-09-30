@@ -13,5 +13,10 @@ env/
 .vscode/
 .idea/
 
+# Old practice folders kept only as local backup
+pr1/
+pr2/
+practice_3_oop/
+
 # OS
 .DS_Store
