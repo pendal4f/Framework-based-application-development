@@ -42,23 +42,28 @@ pytest -v
 ## Структура проекта
 
 ```text
-practice_3_oop/
-  data/
-    users.json
-    categories.json
-    places.json
-    recommendations.json
-  models/
-    user.py
-    category.py
-    place.py
-    recommendation.py
-  reports/
-    Отчёт_ПР3_Халин.docx
-  tests/
-    test_oop.py
-  main.py
-  services.py
-  storage.py
-  README.md
+.
+├── data/
+│   ├── users.json
+│   ├── categories.json
+│   ├── places.json
+│   └── recommendations.json
+├── models/
+│   ├── __init__.py
+│   ├── user.py
+│   ├── category.py
+│   ├── place.py
+│   └── recommendation.py
+├── reports/
+│   ├── Отчёт_ПР1_Халин.docx
+│   ├── Отчёт_ПР2_Халин.docx
+│   └── Отчёт_ПР3_Халин.docx
+├── tests/
+│   └── test_oop.py
+├── main.py
+├── services.py
+├── storage.py
+├── requirements.txt
+├── setup.cfg
+└── README.md
 ```
