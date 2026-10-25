@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f2">
+  <title>Места рядом — поиск по интересам</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Места рядом — главная">
+      <span class="brand-mark">М</span><span>места<span class="brand-light">рядом</span></span>
+    </a>
+    <button class="button button-quiet" id="login-open" type="button">Войти</button>
+    <div class="account hidden" id="account-menu">
+      <span class="account-label">Администратор</span>
+      <button class="button button-quiet" id="logout" type="button">Выйти</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse"></span> НАЙДИТЕ СВОЁ МЕСТО</p>
+        <h1>Город — это<br><em>ваши</em> интересы.</h1>
+        <p class="hero-description">Кофейни, музыка, спорт и новые впечатления. Выберите, что вам близко, — мы покажем места, которые стоит открыть.</p>
+      </div>
+      <div class="hero-stamp" aria-hidden="true"><span>исследуй</span><b>⌖</b><span>своё</span></div>
+    </section>
+
+    <section class="search-panel" aria-label="Фильтры мест">
+      <label class="search-field"><span class="field-icon">⌕</span><span class="sr-only">Поиск мест</span>
+        <input id="search" type="search" placeholder="Название места" autocomplete="off">
+      </label>
+      <label class="select-field"><span class="sr-only">Категория</span>
+        <select id="category"><option value="">Все интересы</option></select><span class="select-arrow">⌄</span>
+      </label>
+      <label class="rating-field"><span>Рейтинг от</span>
+        <select id="rating" aria-label="Минимальный рейтинг">
+          <option value="0">Любой</option><option value="6">6+</option><option value="7">7+</option><option value="8">8+</option><option value="9">9+</option>
+        </select><span class="select-arrow">⌄</span>
+      </label>
+      <button class="button button-dark" id="search-button" type="button">Найти места <span>↗</span></button>
+    </section>
+
+    <section class="results-head">
+      <div><p class="eyebrow">КОЛЛЕКЦИЯ ГОРОДА</p><h2>Места, которые вам подойдут</h2></div>
+      <span class="result-count" id="result-count"></span>
+    </section>
+    <div class="notice hidden" id="notice" role="status"></div>
+    <section class="place-grid" id="places" aria-live="polite"></section>
+
+    <section class="recommendation-panel hidden" id="recommendation-panel">
+      <div class="results-head recommendation-heading">
+        <div><p class="eyebrow">ЛИЧНЫЙ КАБИНЕТ</p><h2>Рекомендации</h2></div>
+        <span class="result-count">Доступно администратору</span>
+      </div>
+      <form id="recommendation-form" class="recommendation-form">
+        <label>Пользователь<select id="user-select" required></select></label>
+        <label>Место<select id="place-select" required></select></label>
+        <button class="button button-dark" type="submit">Создать рекомендацию <span>↗</span></button>
+      </form>
+      <div class="recommendation-list" id="recommendations"></div>
+    </section>
+  </main>
+
+  <footer><span>места рядом</span><span>Открывайте город по-своему · 2026</span></footer>
+
+  <dialog class="login-dialog" id="login-dialog">
+    <form id="login-form" class="login-card">
+      <button class="dialog-close" id="login-close" type="button" aria-label="Закрыть">×</button>
+      <p class="eyebrow">РАДЫ ВАС ВИДЕТЬ</p><h2>Вход для администратора</h2>
+      <label>Имя пользователя<input name="username" autocomplete="username" required></label>
+      <label>Пароль<input name="password" type="password" autocomplete="current-password" required></label>
+      <p class="login-error hidden" id="login-error" role="alert"></p>
+      <button class="button button-dark" type="submit">Войти <span>↗</span></button>
+    </form>
+  </dialog>
+</body>
+</html>

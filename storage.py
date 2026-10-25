@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
+from threading import get_ident
 
 from models import Category, Place, Recommendation, User
 from services import get_category_by_id, get_place_by_id, get_user_by_id
 
-DATA_DIR = Path(__file__).resolve().parent / "data"
+DATA_DIR = Path(os.environ.get("DATA_DIR", Path(__file__).resolve().parent / "data"))
 USERS_FILE = DATA_DIR / "users.json"
 CATEGORIES_FILE = DATA_DIR / "categories.json"
 PLACES_FILE = DATA_DIR / "places.json"
@@ -22,8 +24,12 @@ def read_json(path: Path) -> list[dict]:
 
 def write_json(path: Path, data: list[dict]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as file:
+    temporary_path = path.with_name(f".{path.name}.{os.getpid()}.{get_ident()}.tmp")
+    with temporary_path.open("w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
+        file.flush()
+        os.fsync(file.fileno())
+    os.replace(temporary_path, path)
 
 
 def load_users(path: Path = USERS_FILE) -> list[User]:
