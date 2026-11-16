@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Статистика{% endblock %}
 {% block content %}<h1 class="mb-4">Статистика каталога</h1>
+{% if summary %}<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3"><div class="card"><div class="card-body"><p class="small text-secondary mb-1">Мест в каталоге</p><p class="h4 mb-0">{{ summary.total_places }}</p></div></div></div>
+  <div class="col-6 col-md-3"><div class="card"><div class="card-body"><p class="small text-secondary mb-1">Средний рейтинг</p><p class="h4 mb-0">{{ summary.average_rating|floatformat:1|default:"—" }}</p></div></div></div>
+  <div class="col-6 col-md-3"><div class="card"><div class="card-body"><p class="small text-secondary mb-1">Рейтинг: min / max</p><p class="h4 mb-0">{{ summary.worst_rating|default:"—" }} / {{ summary.best_rating|default:"—" }}</p></div></div></div>
+  <div class="col-6 col-md-3"><div class="card"><div class="card-body"><p class="small text-secondary mb-1">Рекомендации: активные / отменённые</p><p class="h4 mb-0">{{ recommendation_summary.active }} / {{ recommendation_summary.cancelled }}</p></div></div></div>
+</div>{% endif %}
 <div class="table-responsive"><table class="table table-striped align-middle">
-  <thead><tr><th>Категория</th><th>Мест</th><th>Доступно</th><th>Средний рейтинг</th><th>Рекомендации</th></tr></thead>
-  <tbody>{% for row in rows %}<tr><td>{{ row.category_name }}</td><td>{{ row.places_count }}</td><td>{{ row.available_count|default:0 }}</td><td>{{ row.average_rating|default:"—" }}</td><td>{{ row.recommendations_count }}</td></tr>
+  <thead><tr><th>Категория</th><th>Мест</th><th>Доступно</th><th>Средний рейтинг</th><th>Активные рекомендации</th></tr></thead>
+  <tbody>{% for row in rows %}<tr><td>{% firstof row.category_name row.name %}</td><td>{{ row.places_count }}</td><td>{{ row.available_count|default:0 }}</td><td>{{ row.average_rating|floatformat:1|default:"—" }}</td><td>{{ row.recommendations_count }}</td></tr>
   {% empty %}<tr><td colspan="5">Данных пока нет.</td></tr>{% endfor %}</tbody>
 </table></div>{% endblock %}

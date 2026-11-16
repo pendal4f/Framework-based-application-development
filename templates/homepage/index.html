@@ -7,10 +7,13 @@
   <p class="lead">В каталоге {{ places_count }} мест и {{ categories|length }} тематических направлений.</p>
   <a class="btn btn-dark" href="{% url 'places:list' %}">Открыть каталог</a>
 </section>
+{% if top_places %}<h2 class="h3 mb-3">Лучшие места</h2>
+<div class="row g-4 mb-5">{% for place in top_places %}<div class="col-md-4">{% include "places/_place_card.html" with place=place %}</div>{% endfor %}</div>
+{% endif %}
 <h2 class="h3 mb-3">Категории</h2>
 <div class="row g-3">{% for category in categories %}
   <div class="col-md-4"><article class="card h-100"><div class="card-body">
-    <h3 class="h5">{{ category.name }}</h3><p class="mb-0">{{ category.description|default:"Описание появится позже" }}</p>
+    <h3 class="h5">{{ category.name }}{% if category.places_count is not None %} <span class="badge text-bg-light">{{ category.places_count }}</span>{% endif %}</h3><p class="mb-0">{{ category.description|default:"Описание появится позже" }}</p>
   </div></article></div>
 {% empty %}<p>Категории пока не добавлены.</p>{% endfor %}</div>
 {% endblock %}

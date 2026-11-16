@@ -1,0 +1,646 @@
+[
+{
+  "model": "places.category",
+  "pk": 1,
+  "fields": {
+    "name": "Музыка",
+    "description": "Концерты, джаз-клубы и музыкальные площадки"
+  }
+},
+{
+  "model": "places.category",
+  "pk": 2,
+  "fields": {
+    "name": "Спорт",
+    "description": "Спортивные центры, стадионы и активный отдых"
+  }
+},
+{
+  "model": "places.category",
+  "pk": 3,
+  "fields": {
+    "name": "Наука",
+    "description": "Лектории, музеи науки и образовательные пространства"
+  }
+},
+{
+  "model": "places.category",
+  "pk": 4,
+  "fields": {
+    "name": "Кино",
+    "description": "Кинотеатры, фестивали и показы под открытым небом"
+  }
+},
+{
+  "model": "places.place",
+  "pk": 1,
+  "fields": {
+    "name": "Джаз-клуб Север",
+    "category": 1,
+    "address": "ул. Музыкальная, 12",
+    "rating": 8,
+    "is_available": true
+  }
+},
+{
+  "model": "places.place",
+  "pk": 2,
+  "fields": {
+    "name": "Городской спортцентр",
+    "category": 2,
+    "address": "пр-т Победы, 45",
+    "rating": 6,
+    "is_available": true
+  }
+},
+{
+  "model": "places.place",
+  "pk": 3,
+  "fields": {
+    "name": "Лекторий Космос",
+    "category": 3,
+    "address": "ул. Научная, 7",
+    "rating": 9,
+    "is_available": false
+  }
+},
+{
+  "model": "places.place",
+  "pk": 4,
+  "fields": {
+    "name": "Кинотеатр Октябрь",
+    "category": 4,
+    "address": "ул. Ленина, 30",
+    "rating": 7,
+    "is_available": true
+  }
+},
+{
+  "model": "places.place",
+  "pk": 5,
+  "fields": {
+    "name": "Планетарий",
+    "category": 3,
+    "address": "ул. Звёздная, 3",
+    "rating": 10,
+    "is_available": true
+  }
+},
+{
+  "model": "places.place",
+  "pk": 6,
+  "fields": {
+    "name": "Бассейн Волна",
+    "category": 2,
+    "address": "ул. Речная, 18",
+    "rating": 5,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 1,
+  "fields": {
+    "place": 1,
+    "weekday": 6,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 2,
+  "fields": {
+    "place": 1,
+    "weekday": 0,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 3,
+  "fields": {
+    "place": 1,
+    "weekday": 1,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 4,
+  "fields": {
+    "place": 1,
+    "weekday": 2,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 5,
+  "fields": {
+    "place": 1,
+    "weekday": 3,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 6,
+  "fields": {
+    "place": 1,
+    "weekday": 4,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 7,
+  "fields": {
+    "place": 1,
+    "weekday": 5,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 8,
+  "fields": {
+    "place": 2,
+    "weekday": 6,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 9,
+  "fields": {
+    "place": 2,
+    "weekday": 0,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 10,
+  "fields": {
+    "place": 2,
+    "weekday": 1,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 11,
+  "fields": {
+    "place": 2,
+    "weekday": 2,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 12,
+  "fields": {
+    "place": 2,
+    "weekday": 3,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 13,
+  "fields": {
+    "place": 2,
+    "weekday": 4,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 14,
+  "fields": {
+    "place": 2,
+    "weekday": 5,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 15,
+  "fields": {
+    "place": 3,
+    "weekday": 6,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 16,
+  "fields": {
+    "place": 3,
+    "weekday": 0,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 17,
+  "fields": {
+    "place": 3,
+    "weekday": 1,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 18,
+  "fields": {
+    "place": 3,
+    "weekday": 2,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 19,
+  "fields": {
+    "place": 3,
+    "weekday": 3,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 20,
+  "fields": {
+    "place": 3,
+    "weekday": 4,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 21,
+  "fields": {
+    "place": 3,
+    "weekday": 5,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 22,
+  "fields": {
+    "place": 4,
+    "weekday": 0,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 23,
+  "fields": {
+    "place": 4,
+    "weekday": 1,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 24,
+  "fields": {
+    "place": 4,
+    "weekday": 2,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 25,
+  "fields": {
+    "place": 4,
+    "weekday": 3,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 26,
+  "fields": {
+    "place": 4,
+    "weekday": 4,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 27,
+  "fields": {
+    "place": 4,
+    "weekday": 5,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 28,
+  "fields": {
+    "place": 4,
+    "weekday": 6,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 29,
+  "fields": {
+    "place": 5,
+    "weekday": 0,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 30,
+  "fields": {
+    "place": 5,
+    "weekday": 1,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 31,
+  "fields": {
+    "place": 5,
+    "weekday": 2,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 32,
+  "fields": {
+    "place": 5,
+    "weekday": 3,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 33,
+  "fields": {
+    "place": 5,
+    "weekday": 4,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 34,
+  "fields": {
+    "place": 5,
+    "weekday": 5,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 35,
+  "fields": {
+    "place": 5,
+    "weekday": 6,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 36,
+  "fields": {
+    "place": 6,
+    "weekday": 0,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 37,
+  "fields": {
+    "place": 6,
+    "weekday": 1,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 38,
+  "fields": {
+    "place": 6,
+    "weekday": 2,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 39,
+  "fields": {
+    "place": 6,
+    "weekday": 3,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 40,
+  "fields": {
+    "place": 6,
+    "weekday": 4,
+    "is_available": true
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 41,
+  "fields": {
+    "place": 6,
+    "weekday": 5,
+    "is_available": false
+  }
+},
+{
+  "model": "places.placeavailability",
+  "pk": 42,
+  "fields": {
+    "place": 6,
+    "weekday": 6,
+    "is_available": false
+  }
+},
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "name": "Иван Петров",
+    "email": "ivan@example.com",
+    "interests": [
+      4,
+      1
+    ]
+  }
+},
+{
+  "model": "users.user",
+  "pk": 2,
+  "fields": {
+    "name": "Анна Смирнова",
+    "email": "anna@example.com",
+    "interests": [
+      3,
+      2
+    ]
+  }
+},
+{
+  "model": "users.user",
+  "pk": 3,
+  "fields": {
+    "name": "Мария Соколова",
+    "email": "maria@example.com",
+    "interests": [
+      4,
+      3
+    ]
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "place": 1,
+    "visit_date": "2026-10-29",
+    "is_cancelled": false,
+    "created_at": "2026-11-16T10:47:33.909Z"
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "place": 4,
+    "visit_date": "2026-11-18",
+    "is_cancelled": false,
+    "created_at": "2026-11-16T10:47:54.832Z"
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 3,
+  "fields": {
+    "user": 2,
+    "place": 2,
+    "visit_date": "2026-11-16",
+    "is_cancelled": false,
+    "created_at": "2026-11-16T10:47:54.867Z"
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 4,
+  "fields": {
+    "user": 2,
+    "place": 6,
+    "visit_date": "2026-11-17",
+    "is_cancelled": true,
+    "created_at": "2026-11-16T10:47:54.879Z"
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 5,
+  "fields": {
+    "user": 3,
+    "place": 5,
+    "visit_date": "2026-11-18",
+    "is_cancelled": false,
+    "created_at": "2026-11-16T10:47:54.892Z"
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 6,
+  "fields": {
+    "user": 3,
+    "place": 4,
+    "visit_date": "2026-11-20",
+    "is_cancelled": false,
+    "created_at": "2026-11-16T10:47:54.905Z"
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 7,
+  "fields": {
+    "user": 1,
+    "place": 1,
+    "visit_date": "2026-11-20",
+    "is_cancelled": false,
+    "created_at": "2026-11-16T10:47:54.918Z"
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 8,
+  "fields": {
+    "user": 2,
+    "place": 5,
+    "visit_date": "2026-11-21",
+    "is_cancelled": false,
+    "created_at": "2026-11-16T10:47:54.930Z"
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 9,
+  "fields": {
+    "user": 3,
+    "place": 1,
+    "visit_date": "2026-11-21",
+    "is_cancelled": true,
+    "created_at": "2026-11-16T10:47:54.942Z"
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 10,
+  "fields": {
+    "user": 1,
+    "place": 4,
+    "visit_date": "2026-11-22",
+    "is_cancelled": false,
+    "created_at": "2026-11-16T10:47:54.955Z"
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 11,
+  "fields": {
+    "user": 2,
+    "place": 2,
+    "visit_date": "2026-11-24",
+    "is_cancelled": false,
+    "created_at": "2026-11-16T10:47:54.967Z"
+  }
+},
+{
+  "model": "recommendations.recommendation",
+  "pk": 12,
+  "fields": {
+    "user": 3,
+    "place": 5,
+    "visit_date": "2026-11-27",
+    "is_cancelled": false,
+    "created_at": "2026-11-16T10:47:54.980Z"
+  }
+}
+]

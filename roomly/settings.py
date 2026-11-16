@@ -1,9 +1,14 @@
 """Django settings for the place recommendation project."""
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = "django-insecure-local-development-key-change-before-deploying"
-DEBUG = False
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-local-development-key-change-before-deploying",
+)
+# Local development runs with DEBUG on; set DJANGO_DEBUG=0 outside development.
+DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "testserver"]
 
 INSTALLED_APPS = [
@@ -16,6 +21,7 @@ INSTALLED_APPS = [
     "homepage",
     "places",
     "recommendations",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -44,8 +50,9 @@ TEMPLATES = [{
 WSGI_APPLICATION = "roomly.wsgi.application"
 ASGI_APPLICATION = "roomly.asgi.application"
 
-# Django's own auth/admin infrastructure uses this database. The study project's
-# domain data is deliberately queried separately with sqlite3 in PR7.
+# Since PR9 the domain data (places, users, recommendations) lives in this
+# Django-managed database and is queried through the ORM. The PR7 database
+# data/places.sqlite3 is kept only as the source for db/import_sqlite_to_orm.py.
 DATABASES = {"default": {
     "ENGINE": "django.db.backends.sqlite3",
     "NAME": BASE_DIR / "data" / "django.sqlite3",

@@ -1,6 +1,37 @@
 {% extends "base.html" %}
 {% block title %}Рекомендации{% endblock %}
 {% block content %}<h1 class="mb-4">Рекомендации</h1>
+{% if not legacy_storage %}<form method="get" class="row g-3 align-items-end mb-4">
+  <div class="col-md-2"><label for="date" class="form-label">Дата посещения</label>
+    <input type="date" id="date" name="date" class="form-control" value="{{ visit_date }}"></div>
+  <div class="col-md-2"><label for="place" class="form-label">Место</label>
+    <select id="place" name="place" class="form-select"><option value="">Все места</option>
+      {% for place in places %}<option value="{{ place.pk }}" {% if selected_place == place.pk|stringformat:"s" %}selected{% endif %}>{{ place.name }}</option>{% endfor %}
+    </select></div>
+  <div class="col-md-2"><label for="user" class="form-label">Пользователь</label>
+    <select id="user" name="user" class="form-select"><option value="">Все пользователи</option>
+      {% for user in users %}<option value="{{ user.pk }}" {% if selected_user == user.pk|stringformat:"s" %}selected{% endif %}>{{ user.name }}</option>{% endfor %}
+    </select></div>
+  <div class="col-md-2"><label for="status" class="form-label">Статус</label>
+    <select id="status" name="status" class="form-select">
+      <option value="">Все</option>
+      <option value="active" {% if status == "active" %}selected{% endif %}>Активные</option>
+      <option value="cancelled" {% if status == "cancelled" %}selected{% endif %}>Отменённые</option>
+    </select></div>
+  <div class="col-md-2"><label for="sort" class="form-label">Сортировать по</label>
+    <select id="sort" name="sort" class="form-select">
+      <option value="date" {% if sort == "date" %}selected{% endif %}>Дате</option>
+      <option value="place" {% if sort == "place" %}selected{% endif %}>Месту</option>
+      <option value="user" {% if sort == "user" %}selected{% endif %}>Пользователю</option>
+      <option value="rating" {% if sort == "rating" %}selected{% endif %}>Рейтингу места</option>
+    </select></div>
+  <div class="col-md-2 d-flex gap-2"><button type="submit" class="btn btn-dark">Найти</button>
+    <a href="{% url 'recommendations:list' %}" class="btn btn-outline-secondary">Сбросить</a></div>
+</form>
+{% if error %}<p class="text-danger">{{ error }}</p>{% endif %}
+<p class="text-secondary small">Найдено: {{ page_obj.paginator.count }}</p>{% endif %}
 <div class="list-group">{% for recommendation in recommendations %}
   {% include "recommendations/_recommendation_row.html" with item=recommendation %}
-{% empty %}<p>Рекомендаций пока нет.</p>{% endfor %}</div>{% endblock %}
+{% empty %}<p>Рекомендаций не найдено.</p>{% endfor %}</div>
+{% include "_pagination.html" %}
+{% endblock %}

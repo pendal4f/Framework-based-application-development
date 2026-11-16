@@ -16,7 +16,7 @@
         <a href="{% url 'places:list' %}">Места</a>
         <a href="{% url 'recommendations:list' %}">Рекомендации</a>
         {% block extra_nav %}{% endblock %}
-        {% if show_sql_nav %}
+        {% if show_sql_nav or not legacy_storage %}
         <a href="{% url 'places:available' %}">Доступные места</a>
         <a href="{% url 'places:statistics' %}">Статистика</a>
         {% endif %}

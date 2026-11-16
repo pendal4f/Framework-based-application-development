@@ -11,8 +11,7 @@ def place_list(request):
     query = request.GET.get("q", "").strip()
     category_id = request.GET.get("category_id", "").strip()
     min_rating = request.GET.get("min_rating", "").strip()
-    sql =     sql = """SELECT places.*, categories.name AS category_name,
-                    categories.name AS category_name
+    sql = """SELECT places.*, categories.name AS category_name
              FROM places JOIN categories ON categories.id = places.category_id
              WHERE places.name LIKE ? AND (? = '' OR places.category_id =?)
                AND (? = '' OR places.rating >= ?)
@@ -67,6 +66,8 @@ def available_places(request):
                JOIN place_availability
                  ON place_availability.place_id = places.id
                WHERE place_availability.weekday = ?
+                 AND place_availability.is_available = 1
+                 AND places.is_available = 1
                ORDER BY places.rating DESC""",
             (sqlite_weekday,),
         ).fetchall()

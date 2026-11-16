@@ -5,7 +5,7 @@ handler404 = "homepage.views.not_found"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("homepage.sql_urls")),
-    path("places/", include("places.sql_urls")),
-    path("recommendations/", include("recommendations.sql_urls")),
+    path("", include("homepage.urls")),
+    path("places/", include("places.urls")),
+    path("recommendations/", include("recommendations.urls")),
 ]

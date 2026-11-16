@@ -10,4 +10,15 @@
     {% if place.is_available %}<span class="badge text-bg-success">Доступно</span>{% else %}<span class="badge text-bg-secondary">Временно недоступно</span>{% endif %}
   </div>
 </article>
+{% if schedule %}
+<section class="mt-5"><h2 class="h4">График работы</h2>
+  <ul class="list-inline">{% for day in schedule %}<li class="list-inline-item badge {% if day.is_available %}text-bg-success{% else %}text-bg-light text-secondary{% endif %}">{{ day.get_weekday_display }}</li>{% endfor %}</ul>
+</section>
+{% endif %}
+{% if recommendations is not None %}
+<section class="mt-4"><h2 class="h4">Активные рекомендации</h2>
+  <ul class="list-group">{% for item in recommendations %}<li class="list-group-item">{{ item.visit_date|date:"d.m.Y" }} — {{ item.user.name }}</li>
+  {% empty %}<li class="list-group-item text-secondary">Активных рекомендаций нет.</li>{% endfor %}</ul>
+</section>
+{% endif %}
 {% endblock %}
