@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<a href="{% url 'recommendations:list' %}" class="text-secondary">← К списку рекомендаций</a>
+<h1 class="mt-2 mb-4">{{ title }}</h1>
+<form method="post" class="col-lg-7" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="alert alert-danger">{% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}</div>{% endif %}
+  {% for field in form %}{% include "includes/form_field.html" %}{% endfor %}
+  <button type="submit" class="btn btn-dark">{{ submit_label }}</button>
+  <a href="{% if recommendation %}{% url 'recommendations:detail' recommendation.pk %}{% else %}{% url 'recommendations:list' %}{% endif %}" class="btn btn-outline-secondary">Отмена</a>
+</form>
+{% endblock %}

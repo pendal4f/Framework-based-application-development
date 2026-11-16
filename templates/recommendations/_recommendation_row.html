@@ -9,6 +9,8 @@
     {% if item.status %}{% include "recommendations/_status_badge.html" with status=item.status %}
     {% elif item.is_cancelled %}<span class="badge text-bg-secondary">Отменена</span>
     {% else %}<span class="badge text-bg-success">Активна</span>{% endif %}
-    {% if item.visit_date %}<a class="btn btn-sm btn-outline-dark" href="{% url 'recommendations:detail' item.id %}">Подробнее</a>{% endif %}
+    {% if item.visit_date %}<a class="btn btn-sm btn-outline-dark" href="{% url 'recommendations:detail' item.id %}">Подробнее</a>
+    {% if item.status == "active" %}<a class="btn btn-sm btn-outline-secondary" href="{% url 'recommendations:edit' item.id %}">Изменить</a>
+    <form method="post" action="{% url 'recommendations:cancel' item.id %}" class="m-0">{% csrf_token %}<button type="submit" class="btn btn-sm btn-outline-danger">Отменить</button></form>{% endif %}{% endif %}
   </span>
 </div>

@@ -58,6 +58,12 @@ class Place(models.Model):
         default=True,
         verbose_name="Доступно для посещения",
     )
+    image = models.ImageField(
+        upload_to="places/",
+        blank=True,
+        null=True,
+        verbose_name="Изображение",
+    )
     slug = models.SlugField(
         max_length=220,
         unique=True,

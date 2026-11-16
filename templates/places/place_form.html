@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<a href="{% if place %}{{ place.get_absolute_url }}{% else %}{% url 'places:list' %}{% endif %}" class="text-secondary">← Назад</a>
+<h1 class="mt-2 mb-4">{{ title }}</h1>
+<form method="post" enctype="multipart/form-data" class="col-lg-7" novalidate>
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="alert alert-danger">{% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}</div>{% endif %}
+  {% for field in form %}{% include "includes/form_field.html" %}{% endfor %}
+  <button type="submit" class="btn btn-dark">{{ submit_label }}</button>
+</form>
+{% endblock %}

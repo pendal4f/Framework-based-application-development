@@ -125,7 +125,8 @@ def test_recommendation_filters_sort_and_pagination(client):
 
     response = client.get("/recommendations/?date=bad&page=abc&sort=unknown")
     assert response.status_code == 200
-    assert "Укажите корректную дату" in response.content.decode()
+    assert "Проверьте введённые значения фильтров" in response.content.decode()
+    assert response.context["form"].errors["date"]
     assert response.context["page_obj"].number == 1
 
 

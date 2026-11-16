@@ -23,7 +23,10 @@
       </nav>
     </div>
   </header>
-  <main class="container py-5">{% block content %}{% endblock %}</main>
+  <main class="container py-5">
+    {% for message in messages %}<div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags|default:'info' }}{% endif %}">{{ message }}</div>{% endfor %}
+    {% block content %}{% endblock %}
+  </main>
   <footer class="container border-top py-4 text-secondary small">Учебный проект: поиск мест по интересам{% if not legacy_storage and not show_sql_nav %} · мест в каталоге: {{ places_total }}, активных рекомендаций: {{ active_recommendations_total }}{% endif %}</footer>
   <script src="{% static 'django/js/site.js' %}" defer></script>
 </body>

@@ -1,18 +1,16 @@
-"""Recommendation views backed by Django ORM."""
-from datetime import date
-
+"""Recommendation views backed by Django ORM and Django forms."""
+from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import F
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
-from places.models import Place
-from users.models import User
-
+from .forms import RecommendationFilterForm, RecommendationForm
 from .models import Recommendation
 
 PAGE_SIZE = 5
 
-# Allowed values of ?sort= mapped to ORM fields; unknown values fall back to date.
+# Allowed values of ?sort= mapped to ORM fields; user input never reaches order_by().
 SORT_FIELDS = {
     "date": "visit_date",
     "place": "place__name",
@@ -22,32 +20,25 @@ SORT_FIELDS = {
 
 
 def recommendation_list(request):
-    visit_date = request.GET.get("date", "").strip()
-    place_id = request.GET.get("place", "").strip()
-    user_id = request.GET.get("user", "").strip()
-    status = request.GET.get("status", "").strip()
-    sort = request.GET.get("sort", "date")
-    if sort not in SORT_FIELDS:
-        sort = "date"
-    error = None
+    form = RecommendationFilterForm(request.GET or None)
+    form_valid = form.is_valid() if form.is_bound else False
+    filters = form.cleaned_data if form_valid else {}
+    error = "Проверьте введённые значения фильтров." if form.is_bound and not form_valid else None
 
     recommendations = Recommendation.objects.all()
-    if visit_date:
-        try:
-            selected_date = date.fromisoformat(visit_date)
-        except ValueError:
-            error = "Укажите корректную дату."
-        else:
-            recommendations = recommendations.filter(visit_date=selected_date)
+    if filters.get("date"):
+        recommendations = recommendations.for_date(filters["date"])
     # Filtering by foreign keys: no manual JOIN is needed.
-    if place_id.isdigit():
-        recommendations = recommendations.filter(place_id=int(place_id))
-    if user_id.isdigit():
-        recommendations = recommendations.filter(user_id=int(user_id))
+    if filters.get("place"):
+        recommendations = recommendations.filter(place=filters["place"])
+    if filters.get("user"):
+        recommendations = recommendations.filter(user=filters["user"])
+    status = filters.get("status")
     if status in Recommendation.Status.values:
         recommendations = recommendations.filter(status=status)
     elif status == "not_cancelled":
         recommendations = recommendations.exclude(status=Recommendation.Status.CANCELLED)
+    sort = filters.get("sort") or "date"
 
     # Only the fields the page needs: related names via F() + values().
     recommendations = (
@@ -69,14 +60,7 @@ def recommendation_list(request):
     return render(request, "recommendations/recommendation_list.html", {
         "recommendations": page_obj,
         "page_obj": page_obj,
-        "places": Place.objects.order_by("name"),
-        "users": User.objects.order_by("name"),
-        "visit_date": visit_date,
-        "selected_place": place_id,
-        "selected_user": user_id,
-        "status": status,
-        "statuses": Recommendation.Status.choices,
-        "sort": sort,
+        "form": form,
         "error": error,
     })
 
@@ -90,3 +74,69 @@ def recommendation_detail(request, recommendation_id):
     return render(request, "recommendations/recommendation_detail.html", {
         "recommendation": recommendation,
     })
+
+
+def _has_active_duplicate(form, exclude_pk=None):
+    """Business rule: one active recommendation per user, place and date."""
+    duplicates = Recommendation.objects.active().filter(
+        user=form.cleaned_data["user"],
+        place=form.cleaned_data["place"],
+        visit_date=form.cleaned_data["visit_date"],
+    )
+    if exclude_pk is not None:
+        # While editing, the recommendation must not conflict with itself.
+        duplicates = duplicates.exclude(pk=exclude_pk)
+    return duplicates.exists()
+
+
+DUPLICATE_ERROR = "У пользователя уже есть активная рекомендация этого места на эту дату."
+
+
+def recommendation_create(request):
+    if request.method == "POST":
+        form = RecommendationForm(request.POST)
+        if form.is_valid():
+            if _has_active_duplicate(form):
+                form.add_error(None, DUPLICATE_ERROR)
+            else:
+                recommendation = form.save()
+                messages.success(request, f"Рекомендация №{recommendation.pk} создана.")
+                return redirect("recommendations:detail", recommendation.pk)
+    else:
+        form = RecommendationForm()
+    return render(request, "recommendations/recommendation_form.html", {
+        "form": form,
+        "title": "Новая рекомендация",
+        "submit_label": "Создать",
+    })
+
+
+def recommendation_edit(request, recommendation_id):
+    # Only active recommendations can be changed; others return 404.
+    recommendation = get_object_or_404(Recommendation.objects.active(), pk=recommendation_id)
+    if request.method == "POST":
+        form = RecommendationForm(request.POST, instance=recommendation)
+        if form.is_valid():
+            if _has_active_duplicate(form, exclude_pk=recommendation.pk):
+                form.add_error(None, DUPLICATE_ERROR)
+            else:
+                form.save()
+                messages.success(request, f"Рекомендация №{recommendation.pk} изменена.")
+                return redirect("recommendations:detail", recommendation.pk)
+    else:
+        form = RecommendationForm(instance=recommendation)
+    return render(request, "recommendations/recommendation_form.html", {
+        "form": form,
+        "recommendation": recommendation,
+        "title": f"Редактирование рекомендации №{recommendation.pk}",
+        "submit_label": "Сохранить",
+    })
+
+
+@require_POST
+def recommendation_cancel(request, recommendation_id):
+    recommendation = get_object_or_404(Recommendation.objects.active(), pk=recommendation_id)
+    # The record is kept: only its status changes to "cancelled".
+    recommendation.cancel()
+    messages.success(request, f"Рекомендация №{recommendation.pk} отменена.")
+    return redirect("recommendations:list")

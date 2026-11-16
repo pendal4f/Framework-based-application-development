@@ -11,6 +11,11 @@ urlpatterns = [
     path("recommendations/", include("recommendations.urls")),
 ]
 
+if settings.DEBUG:
+    from django.conf.urls.static import static
+
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if "debug_toolbar" in settings.INSTALLED_APPS:
     from debug_toolbar.toolbar import debug_toolbar_urls
 

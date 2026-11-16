@@ -1,6 +1,6 @@
 {% load static %}
 <article class="card place-card h-100">
-  <img class="card-img-top place-image" src="{% static 'django/images/place.svg' %}" alt="Иллюстрация места">
+  <img class="card-img-top place-image" src="{% if place.image %}{{ place.image.url }}{% else %}{% static 'django/images/place.svg' %}{% endif %}" alt="{{ place.name }}">
   <div class="card-body d-flex flex-column">
     <p class="text-secondary small mb-1">{% if place.category %}{{ place.category.name }}{% else %}{{ place.category_name }}{% endif %}</p>
     <h2 class="h5">{{ place.name }}</h2>

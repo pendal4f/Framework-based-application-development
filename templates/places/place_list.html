@@ -3,17 +3,24 @@
 {% block title %}Каталог мест{% endblock %}
 {% block content %}
 <h1 class="mb-4">Каталог мест</h1>
-<form method="get" class="row g-2 mb-4">
-  <div class="col-md-4"><label class="visually-hidden" for="q">Название или адрес</label><input id="q" class="form-control" name="q" value="{{ query }}" placeholder="Название или адрес"></div>
-  {% if categories %}<div class="col-md-3"><select name="category_id" class="form-select"><option value="">Все категории</option>{% for category in categories %}<option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select></div>{% endif %}
-  <div class="col-md-2"><input class="form-control" name="min_rating" type="number" min="0" max="10" value="{{ min_rating }}" placeholder="Рейтинг от"></div>
-  {% if sort %}<div class="col-md-2"><select name="sort" class="form-select" aria-label="Сортировка">
-    <option value="rating" {% if sort == "rating" %}selected{% endif %}>По рейтингу</option>
-    <option value="name" {% if sort == "name" %}selected{% endif %}>По названию</option>
-    <option value="category" {% if sort == "category" %}selected{% endif %}>По категории</option>
-  </select></div>{% endif %}
+{% if form %}
+<div class="d-flex justify-content-end mb-3"><a class="btn btn-dark" href="{% url 'places:create' %}">+ Добавить место</a></div>
+<form method="get" class="row g-2 mb-4" novalidate>
+  <div class="col-md-4"><label class="visually-hidden" for="{{ form.q.id_for_label }}">{{ form.q.label }}</label>{{ form.q }}{% for e in form.q.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}</div>
+  <div class="col-md-3"><label class="visually-hidden" for="{{ form.category_id.id_for_label }}">{{ form.category_id.label }}</label>{{ form.category_id }}{% for e in form.category_id.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}</div>
+  <div class="col-md-2"><label class="visually-hidden" for="{{ form.min_rating.id_for_label }}">{{ form.min_rating.label }}</label>{{ form.min_rating }}{% for e in form.min_rating.errors %}<div class="invalid-feedback d-block">{{ e }}</div>{% endfor %}</div>
+  <div class="col-md-2"><label class="visually-hidden" for="{{ form.sort.id_for_label }}">{{ form.sort.label }}</label>{{ form.sort }}</div>
   <div class="col-md-1"><button class="btn btn-outline-dark w-100">Найти</button></div>
 </form>
+{% if error %}<p class="text-danger">{{ error }}</p>{% endif %}
+{% elif categories %}
+<form method="get" class="row g-2 mb-4">
+  <div class="col-md-5"><label class="visually-hidden" for="q">Название</label><input id="q" class="form-control" name="q" value="{{ query }}" placeholder="Название места"></div>
+  <div class="col-md-3"><select name="category_id" class="form-select"><option value="">Все категории</option>{% for category in categories %}<option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select></div>
+  <div class="col-md-2"><input class="form-control" name="min_rating" type="number" min="0" max="10" value="{{ min_rating }}" placeholder="Рейтинг от"></div>
+  <div class="col-md-2"><button class="btn btn-outline-dark w-100">Найти</button></div>
+</form>
+{% endif %}
 <div class="row g-4">{% for place in places %}
   <div class="col-md-6 col-lg-4">{% include "places/_place_card.html" with place=place %}</div>
 {% empty %}<p>Места не найдены.</p>{% endfor %}</div>

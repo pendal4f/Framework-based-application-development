@@ -57,6 +57,11 @@ class Recommendation(models.Model):
         default=Status.ACTIVE,
         verbose_name="Статус",
     )
+    comment = models.TextField(
+        blank=True,
+        verbose_name="Комментарий",
+        help_text="Например, почему место подходит пользователю.",
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Создано",

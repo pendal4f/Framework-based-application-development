@@ -9,5 +9,12 @@
   <dt class="col-sm-3">Адрес</dt><dd class="col-sm-9">{{ recommendation.place.address }}</dd>
   <dt class="col-sm-3">Дата посещения</dt><dd class="col-sm-9">{{ recommendation.visit_date|date:"d.m.Y" }}</dd>
   <dt class="col-sm-3">Статус</dt><dd class="col-sm-9">{% include "recommendations/_status_badge.html" with status=recommendation.status %}</dd>
+  {% if recommendation.comment %}<dt class="col-sm-3">Комментарий</dt><dd class="col-sm-9">{{ recommendation.comment|linebreaksbr }}</dd>{% endif %}
 </dl>
+{% if recommendation.status == "active" %}
+<div class="d-flex gap-2">
+  <a class="btn btn-outline-dark" href="{% url 'recommendations:edit' recommendation.pk %}">Редактировать</a>
+  <form method="post" action="{% url 'recommendations:cancel' recommendation.pk %}">{% csrf_token %}<button type="submit" class="btn btn-outline-danger">Отменить рекомендацию</button></form>
+</div>
+{% endif %}
 {% endblock %}

@@ -3,10 +3,12 @@ from datetime import date
 
 from django.db.models import Avg, Count, IntegerField, Max, Min, OuterRef, Q, Subquery
 from django.db.models.functions import Coalesce
-from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
 
 from recommendations.models import Recommendation
 
+from .forms import PlaceFilterForm, PlaceForm
 from .models import Category, Place
 
 # Allowed sort keys -> model fields. User input never reaches order_by() directly.
@@ -18,28 +20,57 @@ PLACE_SORT_FIELDS = {
 
 
 def place_list(request):
-    query = request.GET.get("q", "").strip()
-    category_id = request.GET.get("category_id", "").strip()
-    min_rating = request.GET.get("min_rating", "").strip()
-    sort = request.GET.get("sort", "rating")
+    form = PlaceFilterForm(request.GET or None)
+    form_valid = form.is_valid() if form.is_bound else False
+    filters = form.cleaned_data if form_valid else {}
 
     places = Place.objects.select_related("category")
-    if query:
+    if filters.get("q"):
         # Search by several string fields: name OR address.
+        query = filters["q"]
         places = places.filter(Q(name__icontains=query) | Q(address__icontains=query))
-    if category_id.isdigit():
-        places = places.filter(category_id=int(category_id))
-    if min_rating.isdigit():
-        places = places.filter(rating__gte=int(min_rating))
-    places = places.order_by(*PLACE_SORT_FIELDS.get(sort, PLACE_SORT_FIELDS["rating"]))
+    if filters.get("category_id"):
+        places = places.filter(category=filters["category_id"])
+    if filters.get("min_rating") is not None:
+        places = places.filter(rating__gte=filters["min_rating"])
+    sort = filters.get("sort") or "rating"
+    places = places.order_by(*PLACE_SORT_FIELDS[sort])
 
     return render(request, "places/place_list.html", {
         "places": places,
-        "categories": Category.objects.order_by("name"),
-        "query": query,
-        "selected_category": category_id,
-        "min_rating": min_rating,
-        "sort": sort,
+        "form": form,
+        "error": "Проверьте значения фильтров." if form.is_bound and not form_valid else None,
+    })
+
+
+def place_create(request):
+    if request.method == "POST":
+        # Files come in request.FILES, not in request.POST.
+        form = PlaceForm(request.POST, request.FILES)
+        if form.is_valid():
+            place = form.save()
+            messages.success(request, f"Место «{place}» добавлено.")
+            return redirect(place)
+    else:
+        form = PlaceForm()
+    return render(request, "places/place_form.html", {
+        "form": form, "title": "Новое место", "submit_label": "Добавить",
+    })
+
+
+def place_edit(request, slug):
+    place = get_object_or_404(Place, slug=slug)
+    if request.method == "POST":
+        form = PlaceForm(request.POST, request.FILES, instance=place)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Место «{place}» сохранено.")
+            return redirect(place)
+    else:
+        form = PlaceForm(instance=place)
+    return render(request, "places/place_form.html", {
+        "form": form, "place": place,
+        "title": f"Редактирование: {place}", "submit_label": "Сохранить",
     })
 
 
