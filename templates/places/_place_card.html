@@ -9,6 +9,6 @@
       {% if place.is_available %}<span class="badge text-bg-success">Доступно</span>
       {% else %}<span class="badge text-bg-secondary">Временно недоступно</span>{% endif %}
     </p>
-    <a class="btn btn-outline-dark" href="{% url 'places:detail' place.id %}">Подробнее </a>
+    <a class="btn btn-outline-dark" href="{% if place.get_absolute_url %}{{ place.get_absolute_url }}{% else %}{% url 'places:detail' place.id %}{% endif %}">Подробнее </a>
   </div>
 </article>

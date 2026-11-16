@@ -39,7 +39,9 @@
     "category": 1,
     "address": "ул. Музыкальная, 12",
     "rating": 8,
-    "is_available": true
+    "is_available": true,
+    "slug": "dzhaz-klub-sever-1",
+    "is_top_rated": true
   }
 },
 {
@@ -50,7 +52,9 @@
     "category": 2,
     "address": "пр-т Победы, 45",
     "rating": 6,
-    "is_available": true
+    "is_available": true,
+    "slug": "gorodskoi-sporttsentr-2",
+    "is_top_rated": false
   }
 },
 {
@@ -61,7 +65,9 @@
     "category": 3,
     "address": "ул. Научная, 7",
     "rating": 9,
-    "is_available": false
+    "is_available": false,
+    "slug": "lektorii-kosmos-3",
+    "is_top_rated": true
   }
 },
 {
@@ -72,7 +78,9 @@
     "category": 4,
     "address": "ул. Ленина, 30",
     "rating": 7,
-    "is_available": true
+    "is_available": true,
+    "slug": "kinoteatr-oktiabr-4",
+    "is_top_rated": false
   }
 },
 {
@@ -83,7 +91,9 @@
     "category": 3,
     "address": "ул. Звёздная, 3",
     "rating": 10,
-    "is_available": true
+    "is_available": true,
+    "slug": "planetarii-5",
+    "is_top_rated": true
   }
 },
 {
@@ -94,7 +104,9 @@
     "category": 2,
     "address": "ул. Речная, 18",
     "rating": 5,
-    "is_available": true
+    "is_available": true,
+    "slug": "bassein-volna-6",
+    "is_top_rated": false
   }
 },
 {
@@ -518,7 +530,7 @@
     "user": 1,
     "place": 1,
     "visit_date": "2026-10-29",
-    "is_cancelled": false,
+    "status": "completed",
     "created_at": "2026-11-16T10:47:33.909Z"
   }
 },
@@ -529,7 +541,7 @@
     "user": 1,
     "place": 4,
     "visit_date": "2026-11-18",
-    "is_cancelled": false,
+    "status": "active",
     "created_at": "2026-11-16T10:47:54.832Z"
   }
 },
@@ -540,7 +552,7 @@
     "user": 2,
     "place": 2,
     "visit_date": "2026-11-16",
-    "is_cancelled": false,
+    "status": "active",
     "created_at": "2026-11-16T10:47:54.867Z"
   }
 },
@@ -551,7 +563,7 @@
     "user": 2,
     "place": 6,
     "visit_date": "2026-11-17",
-    "is_cancelled": true,
+    "status": "cancelled",
     "created_at": "2026-11-16T10:47:54.879Z"
   }
 },
@@ -562,7 +574,7 @@
     "user": 3,
     "place": 5,
     "visit_date": "2026-11-18",
-    "is_cancelled": false,
+    "status": "active",
     "created_at": "2026-11-16T10:47:54.892Z"
   }
 },
@@ -573,7 +585,7 @@
     "user": 3,
     "place": 4,
     "visit_date": "2026-11-20",
-    "is_cancelled": false,
+    "status": "active",
     "created_at": "2026-11-16T10:47:54.905Z"
   }
 },
@@ -584,7 +596,7 @@
     "user": 1,
     "place": 1,
     "visit_date": "2026-11-20",
-    "is_cancelled": false,
+    "status": "active",
     "created_at": "2026-11-16T10:47:54.918Z"
   }
 },
@@ -595,7 +607,7 @@
     "user": 2,
     "place": 5,
     "visit_date": "2026-11-21",
-    "is_cancelled": false,
+    "status": "active",
     "created_at": "2026-11-16T10:47:54.930Z"
   }
 },
@@ -606,7 +618,7 @@
     "user": 3,
     "place": 1,
     "visit_date": "2026-11-21",
-    "is_cancelled": true,
+    "status": "cancelled",
     "created_at": "2026-11-16T10:47:54.942Z"
   }
 },
@@ -617,7 +629,7 @@
     "user": 1,
     "place": 4,
     "visit_date": "2026-11-22",
-    "is_cancelled": false,
+    "status": "active",
     "created_at": "2026-11-16T10:47:54.955Z"
   }
 },
@@ -628,7 +640,7 @@
     "user": 2,
     "place": 2,
     "visit_date": "2026-11-24",
-    "is_cancelled": false,
+    "status": "active",
     "created_at": "2026-11-16T10:47:54.967Z"
   }
 },
@@ -639,7 +651,7 @@
     "user": 3,
     "place": 5,
     "visit_date": "2026-11-27",
-    "is_cancelled": false,
+    "status": "active",
     "created_at": "2026-11-16T10:47:54.980Z"
   }
 }

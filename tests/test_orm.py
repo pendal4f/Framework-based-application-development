@@ -1,4 +1,4 @@
-"""PR9: models, relations, data transfer and ORM-backed pages."""
+"""PR9-PR10: models, relations, manager, statuses and ORM-backed pages."""
 from datetime import date
 
 import pytest
@@ -55,13 +55,13 @@ def test_crud_through_orm(demo_data):
 
 
 def test_main_pages_render(client):
-    for url in ("/", "/places/", "/places/1/", "/places/available/",
+    for url in ("/", "/places/", "/places/dzhaz-klub-sever-1/", "/places/available/",
                 "/places/statistics/", "/recommendations/", "/recommendations/1/"):
         assert client.get(url).status_code == 200, url
 
 
 def test_missing_objects_return_404(client):
-    for url in ("/places/999/", "/recommendations/999/"):
+    for url in ("/places/net-takogo-mesta/", "/recommendations/999/"):
         response = client.get(url)
         assert response.status_code == 404
         assert "Страница не найдена" in response.content.decode()
@@ -101,7 +101,7 @@ def test_statistics_counts_categories_without_places(client):
         "name", "places_count", "recommendations_count")}
     assert rows["Пустая категория"]["places_count"] == 0
     assert rows["Музыка"]["recommendations_count"] == Recommendation.objects.filter(
-        place__category__name="Музыка", is_cancelled=False).count()
+        place__category__name="Музыка").active().count()
 
 
 def test_recommendation_filters_sort_and_pagination(client):
@@ -114,8 +114,11 @@ def test_recommendation_filters_sort_and_pagination(client):
     assert dates == sorted(dates) and len(dates) == 3
 
     response = client.get("/recommendations/?user=3&status=active")
-    assert all(not item["is_cancelled"] and item["user_name"] == "Мария Соколова"
+    assert all(item["status"] == "active" and item["user_name"] == "Мария Соколова"
                for item in response.context["recommendations"])
+
+    response = client.get("/recommendations/?status=not_cancelled")
+    assert response.context["page_obj"].paginator.count == 10
 
     response = client.get(f"/recommendations/?date={date(2026, 11, 21)}")
     assert response.context["page_obj"].paginator.count == 2
@@ -129,3 +132,59 @@ def test_recommendation_filters_sort_and_pagination(client):
 def test_pagination_keeps_filters(client):
     html = client.get("/recommendations/?sort=user&status=active").content.decode()
     assert "sort=user&amp;status=active&amp;page=2" in html
+
+
+def test_manager_methods(demo_data):
+    assert Recommendation.objects.active().count() == 9
+    assert Recommendation.objects.cancelled().count() == 2
+    assert Recommendation.objects.completed().count() == 1
+    assert Recommendation.objects.active().for_date(date(2026, 11, 21)).count() == 1
+
+
+def test_cancel_keeps_record(demo_data):
+    recommendation = Recommendation.objects.get(pk=2)
+    recommendation.cancel()
+    recommendation.refresh_from_db()
+    assert recommendation.status == Recommendation.Status.CANCELLED
+
+
+def test_slug_and_absolute_url(demo_data):
+    category = Category.objects.get(name="Наука")
+    place = Place.objects.create(name="Музей Науки", category=category,
+                                 address="ул. Опытная, 2", rating=6)
+    assert place.slug == f"muzei-nauki-{place.pk}"
+    assert place.get_absolute_url() == f"/places/muzei-nauki-{place.pk}/"
+    place.name = "Новый музей"
+    place.save()
+    place.refresh_from_db()
+    assert place.slug == f"muzei-nauki-{place.pk}"  # the URL stays stable
+
+
+def test_generated_field_follows_rating(demo_data):
+    place = Place.objects.get(pk=2)
+    assert place.is_top_rated is False
+    place.rating = 9
+    place.save()
+    place.refresh_from_db()
+    assert place.is_top_rated is True
+
+
+def test_admin_pages(admin_client, demo_data):
+    for url in ("/admin/", "/admin/places/place/", "/admin/places/place/1/change/",
+                "/admin/users/user/1/change/", "/admin/recommendations/recommendation/",
+                "/admin/places/category/"):
+        assert admin_client.get(url).status_code == 200, url
+    html = admin_client.get(
+        "/admin/recommendations/recommendation/?q=Планетарий").content.decode()
+    assert "Планетарий" in html and "Джаз-клуб Север" not in html
+
+
+def test_admin_cancel_action(admin_client, demo_data):
+    admin_client.post("/admin/recommendations/recommendation/", {
+        "action": "mark_cancelled", "_selected_action": ["2", "3"]})
+    assert set(Recommendation.objects.cancelled().values_list("pk", flat=True)) >= {2, 3}
+
+
+def test_context_processor(client):
+    html = client.get("/").content.decode()
+    assert "мест в каталоге: 6" in html

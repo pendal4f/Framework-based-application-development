@@ -6,7 +6,7 @@
 <article class="row g-4 align-items-center mt-2">
   <div class="col-md-6"><img class="img-fluid rounded-4" src="{% static 'django/images/place.svg' %}" alt="Иллюстрация места"></div>
   <div class="col-md-6"><p class="text-secondary">{% if place.category %}{{ place.category.name }}{% else %}{{ place.category_name }}{% endif %}</p>
-    <h1>{{ place.name }}</h1><p>{{ place.address }}</p><p>Рейтинг: {{ place.rating }}/10</p>
+    <h1>{{ place.name }}{% if place.is_top_rated %} <span class="badge text-bg-warning fs-6 align-middle">Высокий рейтинг</span>{% endif %}</h1><p>{{ place.address }}</p><p>Рейтинг: {{ place.rating }}/10</p>
     {% if place.is_available %}<span class="badge text-bg-success">Доступно</span>{% else %}<span class="badge text-bg-secondary">Временно недоступно</span>{% endif %}
   </div>
 </article>

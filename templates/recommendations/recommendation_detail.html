@@ -5,9 +5,9 @@
 <h1 class="mt-2 mb-4">Рекомендация №{{ recommendation.pk }}</h1>
 <dl class="row">
   <dt class="col-sm-3">Пользователь</dt><dd class="col-sm-9">{{ recommendation.user.name }}</dd>
-  <dt class="col-sm-3">Место</dt><dd class="col-sm-9"><a href="{% url 'places:detail' recommendation.place.pk %}">{{ recommendation.place.name }}</a> ({{ recommendation.place.category.name }}, рейтинг {{ recommendation.place.rating }}/10)</dd>
+  <dt class="col-sm-3">Место</dt><dd class="col-sm-9"><a href="{{ recommendation.place.get_absolute_url }}">{{ recommendation.place.name }}</a> ({{ recommendation.place.category.name }}, рейтинг {{ recommendation.place.rating }}/10)</dd>
   <dt class="col-sm-3">Адрес</dt><dd class="col-sm-9">{{ recommendation.place.address }}</dd>
   <dt class="col-sm-3">Дата посещения</dt><dd class="col-sm-9">{{ recommendation.visit_date|date:"d.m.Y" }}</dd>
-  <dt class="col-sm-3">Статус</dt><dd class="col-sm-9">{% if recommendation.is_cancelled %}<span class="badge text-bg-secondary">Отменена</span>{% else %}<span class="badge text-bg-success">Активна</span>{% endif %}</dd>
+  <dt class="col-sm-3">Статус</dt><dd class="col-sm-9">{% include "recommendations/_status_badge.html" with status=recommendation.status %}</dd>
 </dl>
 {% endblock %}

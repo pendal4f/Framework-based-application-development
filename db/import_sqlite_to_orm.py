@@ -86,7 +86,10 @@ def import_from_sqlite(source_db: Path = SOURCE_DB) -> dict:
                     "user_id": row["user_id"],
                     "place_id": row["place_id"],
                     "visit_date": DEFAULT_VISIT_DATE,
-                    "is_cancelled": bool(row["is_cancelled"]),
+                    "status": (
+                        Recommendation.Status.CANCELLED if row["is_cancelled"]
+                        else Recommendation.Status.ACTIVE
+                    ),
                 },
             )
 

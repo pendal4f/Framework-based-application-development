@@ -6,7 +6,8 @@
     {% if item.category_name %}<span class="text-secondary small">· {{ item.category_name }}</span>{% endif %}
   </span>
   <span class="d-flex align-items-center gap-2">
-    {% if item.is_cancelled %}<span class="badge text-bg-secondary">Отменена</span>
+    {% if item.status %}{% include "recommendations/_status_badge.html" with status=item.status %}
+    {% elif item.is_cancelled %}<span class="badge text-bg-secondary">Отменена</span>
     {% else %}<span class="badge text-bg-success">Активна</span>{% endif %}
     {% if item.visit_date %}<a class="btn btn-sm btn-outline-dark" href="{% url 'recommendations:detail' item.id %}">Подробнее</a>{% endif %}
   </span>

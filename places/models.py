@@ -1,6 +1,12 @@
 """ORM models of the place catalog: categories, places and weekly schedule."""
 from django.core.validators import MaxValueValidator
 from django.db import models
+from django.db.models import Case, Value, When
+from django.urls import reverse
+from django.utils.text import slugify
+from unidecode import unidecode
+
+TOP_RATING = 8
 
 
 class Category(models.Model):
@@ -46,10 +52,28 @@ class Place(models.Model):
     rating = models.PositiveSmallIntegerField(
         validators=[MaxValueValidator(10)],
         verbose_name="Рейтинг",
+        help_text="Целое число от 0 до 10.",
     )
     is_available = models.BooleanField(
         default=True,
         verbose_name="Доступно для посещения",
+    )
+    slug = models.SlugField(
+        max_length=220,
+        unique=True,
+        editable=False,
+        verbose_name="URL-идентификатор",
+    )
+    # Calculated by the database from rating and stored in the table.
+    is_top_rated = models.GeneratedField(
+        expression=Case(
+            When(rating__gte=TOP_RATING, then=Value(True)),
+            default=Value(False),
+            output_field=models.BooleanField(),
+        ),
+        output_field=models.BooleanField(),
+        db_persist=True,
+        verbose_name="Высокий рейтинг",
     )
 
     class Meta:
@@ -59,6 +83,21 @@ class Place(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        # The slug is built once (transliterated name + pk) and then kept stable.
+        if not self.slug:
+            base_slug = slugify(unidecode(self.name)) or "place"
+            if self.pk is None:
+                super().save(*args, **kwargs)
+                self.slug = f"{base_slug}-{self.pk}"
+                super().save(update_fields=["slug"])
+                return
+            self.slug = f"{base_slug}-{self.pk}"
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("places:detail", kwargs={"slug": self.slug})
 
     def is_open_on(self, selected_date):
         """Return True when the place accepts visitors on the given date."""

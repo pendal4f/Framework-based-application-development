@@ -44,10 +44,10 @@ def recommendation_list(request):
         recommendations = recommendations.filter(place_id=int(place_id))
     if user_id.isdigit():
         recommendations = recommendations.filter(user_id=int(user_id))
-    if status == "active":
-        recommendations = recommendations.exclude(is_cancelled=True)
-    elif status == "cancelled":
-        recommendations = recommendations.filter(is_cancelled=True)
+    if status in Recommendation.Status.values:
+        recommendations = recommendations.filter(status=status)
+    elif status == "not_cancelled":
+        recommendations = recommendations.exclude(status=Recommendation.Status.CANCELLED)
 
     # Only the fields the page needs: related names via F() + values().
     recommendations = (
@@ -60,7 +60,7 @@ def recommendation_list(request):
         )
         .order_by(SORT_FIELDS[sort], "pk")
         .values(
-            "id", "visit_date", "is_cancelled", "place_name",
+            "id", "visit_date", "status", "place_name",
             "place_rating", "category_name", "user_name",
         )
     )
@@ -75,6 +75,7 @@ def recommendation_list(request):
         "selected_place": place_id,
         "selected_user": user_id,
         "status": status,
+        "statuses": Recommendation.Status.choices,
         "sort": sort,
         "error": error,
     })
@@ -83,7 +84,7 @@ def recommendation_list(request):
 def recommendation_detail(request, recommendation_id):
     # One query with JOINs to user, place and category.
     recommendation = get_object_or_404(
-        Recommendation.objects.select_related("user", "place__category"),
+        Recommendation.objects.with_related(),
         pk=recommendation_id,
     )
     return render(request, "recommendations/recommendation_detail.html", {

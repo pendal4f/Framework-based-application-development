@@ -1,5 +1,6 @@
 """Django settings for the place recommendation project."""
 import os
+import sys
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -9,6 +10,7 @@ SECRET_KEY = os.environ.get(
 )
 # Local development runs with DEBUG on; set DJANGO_DEBUG=0 outside development.
 DEBUG = os.environ.get("DJANGO_DEBUG", "1") == "1"
+TESTING = "pytest" in sys.modules or "test" in sys.argv[1:2]
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "testserver"]
 
 INSTALLED_APPS = [
@@ -34,6 +36,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# Django Debug Toolbar: SQL analysis during local development only.
+if DEBUG and not TESTING:
+    INSTALLED_APPS.append("debug_toolbar")
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+    INTERNAL_IPS = ["127.0.0.1", "::1"]
+
 ROOT_URLCONF = "roomly.urls"
 TEMPLATES = [{
     "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -44,6 +52,7 @@ TEMPLATES = [{
             "django.template.context_processors.request",
             "django.contrib.auth.context_processors.auth",
             "django.contrib.messages.context_processors.messages",
+            "places.context_processors.site_context",
         ],
     },
 }]

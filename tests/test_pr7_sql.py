@@ -6,6 +6,10 @@ from db import database
 from db.import_json import import_json
 
 
+# The shared context processor reads the ORM database on every page.
+pytestmark = pytest.mark.django_db
+
+
 @pytest.fixture
 def sql_client(tmp_path, monkeypatch):
     monkeypatch.setattr(database, "DB_PATH", tmp_path / "test.sqlite3")

@@ -15,8 +15,8 @@
   <div class="col-md-2"><label for="status" class="form-label">Статус</label>
     <select id="status" name="status" class="form-select">
       <option value="">Все</option>
-      <option value="active" {% if status == "active" %}selected{% endif %}>Активные</option>
-      <option value="cancelled" {% if status == "cancelled" %}selected{% endif %}>Отменённые</option>
+      {% for value, label in statuses %}<option value="{{ value }}" {% if status == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      <option value="not_cancelled" {% if status == "not_cancelled" %}selected{% endif %}>Кроме отменённых</option>
     </select></div>
   <div class="col-md-2"><label for="sort" class="form-label">Сортировать по</label>
     <select id="sort" name="sort" class="form-select">

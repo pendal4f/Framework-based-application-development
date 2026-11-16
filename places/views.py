@@ -43,13 +43,13 @@ def place_list(request):
     })
 
 
-def place_detail(request, place_id):
-    place = get_object_or_404(Place.objects.select_related("category"), pk=place_id)
+def place_detail(request, slug):
+    place = get_object_or_404(Place.objects.select_related("category"), slug=slug)
     # Reverse relations: place.schedule and place.recommendations.
     recommendations = (
         place.recommendations
         .select_related("user")
-        .exclude(is_cancelled=True)
+        .exclude(status=Recommendation.Status.CANCELLED)
         .order_by("visit_date")
     )
     return render(request, "places/place_detail.html", {
@@ -93,7 +93,8 @@ def statistics(request):
     # joining recommendations does not inflate place counts and averages.
     active_recommendations = (
         Recommendation.objects
-        .filter(place__category=OuterRef("pk"), is_cancelled=False)
+        .active()
+        .filter(place__category=OuterRef("pk"))
         .order_by()
         .values("place__category")
         .annotate(total=Count("pk"))
@@ -117,10 +118,12 @@ def statistics(request):
         best_rating=Max("rating"),
         worst_rating=Min("rating"),
     )
+    statuses = Recommendation.Status
     recommendation_summary = Recommendation.objects.aggregate(
         total=Count("pk"),
-        active=Count("pk", filter=Q(is_cancelled=False)),
-        cancelled=Count("pk", filter=Q(is_cancelled=True)),
+        active=Count("pk", filter=Q(status=statuses.ACTIVE)),
+        cancelled=Count("pk", filter=Q(status=statuses.CANCELLED)),
+        completed=Count("pk", filter=Q(status=statuses.COMPLETED)),
     )
     return render(request, "places/statistics.html", {
         "rows": rows,
