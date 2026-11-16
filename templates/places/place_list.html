@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Каталог мест{% endblock %}
+{% block content %}
+<h1 class="mb-4">Каталог мест</h1>
+<form method="get" class="row g-2 mb-4">
+  <div class="col-md-5"><label class="visually-hidden" for="q">Название</label><input id="q" class="form-control" name="q" value="{{ query }}" placeholder="Название места"></div>
+  {% if categories %}<div class="col-md-3"><select name="category_id" class="form-select"><option value="">Все категории</option>{% for category in categories %}<option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select></div>{% endif %}
+  <div class="col-md-2"><input class="form-control" name="min_rating" type="number" min="0" max="10" value="{{ min_rating }}" placeholder="Рейтинг от"></div>
+  <div class="col-md-2"><button class="btn btn-outline-dark w-100">Найти</button></div>
+</form>
+<div class="row g-4">{% for place in places %}
+  <div class="col-md-6 col-lg-4">{% include "places/_place_card.html" with place=place %}</div>
+{% empty %}<p>Места пока не добавлены.</p>{% endfor %}</div>
+{% endblock %}

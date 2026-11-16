@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Рекомендации{% endblock %}
+{% block content %}<h1 class="mb-4">Рекомендации</h1>
+<div class="list-group">{% for recommendation in recommendations %}
+  {% include "recommendations/_recommendation_row.html" with item=recommendation %}
+{% empty %}<p>Рекомендаций пока нет.</p>{% endfor %}</div>{% endblock %}

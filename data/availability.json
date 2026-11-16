@@ -1,0 +1,23 @@
+[
+  {"place_id": 1, "weekday": 0, "is_available": false},
+  {"place_id": 1, "weekday": 1, "is_available": false},
+  {"place_id": 1, "weekday": 2, "is_available": false},
+  {"place_id": 1, "weekday": 3, "is_available": false},
+  {"place_id": 1, "weekday": 4, "is_available": true},
+  {"place_id": 1, "weekday": 5, "is_available": true},
+  {"place_id": 1, "weekday": 6, "is_available": true},
+  {"place_id": 2, "weekday": 0, "is_available": false},
+  {"place_id": 2, "weekday": 1, "is_available": true},
+  {"place_id": 2, "weekday": 2, "is_available": true},
+  {"place_id": 2, "weekday": 3, "is_available": true},
+  {"place_id": 2, "weekday": 4, "is_available": true},
+  {"place_id": 2, "weekday": 5, "is_available": true},
+  {"place_id": 2, "weekday": 6, "is_available": true},
+  {"place_id": 3, "weekday": 0, "is_available": false},
+  {"place_id": 3, "weekday": 1, "is_available": false},
+  {"place_id": 3, "weekday": 2, "is_available": false},
+  {"place_id": 3, "weekday": 3, "is_available": false},
+  {"place_id": 3, "weekday": 4, "is_available": false},
+  {"place_id": 3, "weekday": 5, "is_available": false},
+  {"place_id": 3, "weekday": 6, "is_available": false}
+]

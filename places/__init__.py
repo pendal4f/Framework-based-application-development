@@ -1,0 +1,2 @@
+
+"""Django place catalogue application."""

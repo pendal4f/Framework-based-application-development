@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Главная · Места рядом{% endblock %}
+{% block content %}
+<section class="hero rounded-4 p-5 mb-5">
+  <p class="text-uppercase small mb-2">Подборка по интересам</p>
+  <h1 class="display-5 fw-bold">Найдите место для нового впечатления</h1>
+  <p class="lead">В каталоге {{ places_count }} мест и {{ categories|length }} тематических направлений.</p>
+  <a class="btn btn-dark" href="{% url 'places:list' %}">Открыть каталог</a>
+</section>
+<h2 class="h3 mb-3">Категории</h2>
+<div class="row g-3">{% for category in categories %}
+  <div class="col-md-4"><article class="card h-100"><div class="card-body">
+    <h3 class="h5">{{ category.name }}</h3><p class="mb-0">{{ category.description|default:"Описание появится позже" }}</p>
+  </div></article></div>
+{% empty %}<p>Категории пока не добавлены.</p>{% endfor %}</div>
+{% endblock %}

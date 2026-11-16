@@ -1,0 +1,14 @@
+{% load static %}
+<article class="card place-card h-100">
+  <img class="card-img-top place-image" src="{% static 'django/images/place.svg' %}" alt="Иллюстрация места">
+  <div class="card-body d-flex flex-column">
+    <p class="text-secondary small mb-1">{% if place.category %}{{ place.category.name }}{% else %}{{ place.category_name }}{% endif %}</p>
+    <h2 class="h5">{{ place.name }}</h2>
+    <p>{{ place.address }}</p>
+    <p class="mt-auto">Рейтинг: <strong>{{ place.rating }}/10</strong>
+      {% if place.is_available %}<span class="badge text-bg-success">Доступно</span>
+      {% else %}<span class="badge text-bg-secondary">Временно недоступно</span>{% endif %}
+    </p>
+    <a class="btn btn-outline-dark" href="{% url 'places:detail' place.id %}">Подробнее </a>
+  </div>
+</article>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" role="img" aria-labelledby="title">
+  <title id="title">Пейзаж города</title>
+  <rect width="800" height="420" fill="#e7eee5"/>
+  <circle cx="620" cy="100" r="54" fill="#e5b962"/>
+  <path d="M0 300 150 190l125 105 150-150 205 170 90-80 80 68v117H0Z" fill="#91ad91"/>
+  <path d="M0 345 178 260l150 90 170-93 160 100 142-59v122H0Z" fill="#587965"/>
+  <path d="M305 420V290h150v130M330 290v-70h95v70" fill="#f6f1df"/>
+</svg>

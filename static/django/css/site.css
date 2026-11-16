@@ -1,0 +1,6 @@
+body { color: #26312c; background: #fbfcfa; }
+a { color: #315b45; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.hero { background: linear-gradient(120deg, #dcebdd, #f2ead7); }
+.place-card { border-color: #e0e7df; box-shadow: 0 8px 24px #1c35200a; }
+.place-image { height: 190px; object-fit: cover; background: #eaf0e8; }

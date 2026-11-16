@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Статистика{% endblock %}
+{% block content %}<h1 class="mb-4">Статистика каталога</h1>
+<div class="table-responsive"><table class="table table-striped align-middle">
+  <thead><tr><th>Категория</th><th>Мест</th><th>Доступно</th><th>Средний рейтинг</th><th>Рекомендации</th></tr></thead>
+  <tbody>{% for row in rows %}<tr><td>{{ row.category_name }}</td><td>{{ row.places_count }}</td><td>{{ row.available_count|default:0 }}</td><td>{{ row.average_rating|default:"—" }}</td><td>{{ row.recommendations_count }}</td></tr>
+  {% empty %}<tr><td colspan="5">Данных пока нет.</td></tr>{% endfor %}</tbody>
+</table></div>{% endblock %}

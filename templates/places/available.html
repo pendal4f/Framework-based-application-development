@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Доступные места{% endblock %}
+{% block content %}
+<h1>Доступные места</h1>
+<form method="get" class="row g-2 align-items-end mb-4">
+  <div class="col-auto"><label for="date" class="form-label">Дата поиска</label><input class="form-control" id="date" name="date" type="date" value="{{ selected_date }}"></div>
+  <div class="col-auto"><button class="btn btn-dark">Показать</button></div>
+</form>
+<p>Места с отметкой «доступно» на {{ selected_date|date:"d.m.Y" }}.</p>
+<div class="row g-4">{% for place in places %}<div class="col-md-6 col-lg-4">{% include "places/_place_card.html" with place=place %}</div>
+{% empty %}<p>Доступных мест не найдено.</p>{% endfor %}</div>
+{% endblock %}
